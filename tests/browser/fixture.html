@@ -34,7 +34,7 @@ document.querySelector('[aria-label="分享帖子"]').onclick = () => {
   document.querySelector('[role="menu"]')?.remove();
   const menu = document.createElement('div');
   menu.setAttribute('role', 'menu');
-  menu.innerHTML = '<div><div role="menuitem" data-testid="copyLink"><span>复制链接</span></div></div>';
+  menu.innerHTML = '<div><div role="menuitem" data-testid="copyLink"><svg viewBox="0 0 24 24"><path d="M1 1"></path></svg><span>复制链接</span></div></div>';
   document.body.append(menu);
 };
 function receive() { return fetch('/i/api/graphql/fixture/HomeTimeline').then(r=>r.json()); }

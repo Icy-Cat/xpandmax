@@ -23,7 +23,7 @@ function data(w) {
   }] });
 }
 
-function openMenu(w, html = '<div role="menuitem" data-testid="copyLink"><span>复制链接</span></div>') {
+function openMenu(w, html = '<div role="menuitem" data-testid="copyLink"><svg viewBox="0 0 24 24"><path d="M1 1"></path></svg><span>复制链接</span></div>') {
   w.document.querySelector('[data-testid="share"], [aria-label="分享帖子"]').click();
   const menu = w.document.createElement('div');
   menu.setAttribute('role', 'menu');
@@ -39,6 +39,7 @@ test('copy Markdown uses intercepted tweet data and injects once into the native
     const menu = openMenu(t.w); await tick();
     assert.equal(menu.querySelectorAll('[data-xfc-copy-markdown]').length, 1);
     assert.equal(menu.querySelector('[data-xfc-copy-markdown]').hasAttribute('data-testid'), false);
+    assert.equal(menu.querySelector('[data-xfc-copy-markdown] svg').dataset.lucide, 'clipboard-copy');
     menu.append(t.w.document.createElement('span')); await tick();
     assert.equal(menu.querySelectorAll('[data-xfc-copy-markdown]').length, 1);
     menu.querySelector('[data-xfc-copy-markdown]').click(); await tick();

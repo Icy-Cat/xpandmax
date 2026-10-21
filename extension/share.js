@@ -98,6 +98,13 @@
     const text = [...item.querySelectorAll('span')].find(node => node.children.length === 0 && node.textContent.trim());
     if (text) text.textContent = '复制为 Markdown';
     else item.textContent = '复制为 Markdown';
+    const icon = item.querySelector('svg');
+    if (icon) {
+      const lucide = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      for (const [name, value] of Object.entries({ viewBox: '0 0 24 24', width: '24', height: '24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true', 'data-lucide': 'clipboard-copy' })) lucide.setAttribute(name, value);
+      lucide.innerHTML = '<rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M8 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h2"></path><path d="M16 4h2a2 2 0 0 1 2 2v2"></path><path d="M16 19h6"></path><path d="m19 16 3 3-3 3"></path>';
+      icon.replaceWith(lucide);
+    }
     item.addEventListener('click', async event => {
       event.preventDefault(); event.stopPropagation();
       const record = tweets.get(tweetId);
