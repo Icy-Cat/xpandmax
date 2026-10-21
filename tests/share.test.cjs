@@ -39,7 +39,10 @@ test('copy Markdown uses intercepted tweet data and injects once into the native
     const menu = openMenu(t.w); await tick();
     assert.equal(menu.querySelectorAll('[data-xfc-copy-markdown]').length, 1);
     assert.equal(menu.querySelector('[data-xfc-copy-markdown]').hasAttribute('data-testid'), false);
-    assert.equal(menu.querySelector('[data-xfc-copy-markdown] svg').dataset.lucide, 'clipboard-copy');
+    const icon = menu.querySelector('[data-xfc-copy-markdown] svg');
+    assert.equal(icon.dataset.lucide, 'clipboard-copy');
+    assert.equal(icon.hasAttribute('width') || icon.hasAttribute('height'), false);
+    assert.equal(icon.style.fill, 'none');
     menu.append(t.w.document.createElement('span')); await tick();
     assert.equal(menu.querySelectorAll('[data-xfc-copy-markdown]').length, 1);
     menu.querySelector('[data-xfc-copy-markdown]').click(); await tick();
