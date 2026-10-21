@@ -4,8 +4,8 @@ const fs = require('node:fs');
 const { JSDOM } = require('jsdom');
 const tick = () => new Promise(resolve => setTimeout(resolve, 30));
 
-function setup(saved = true, clipboard = true) {
-  const dom = new JSDOM('<article data-testid="tweet"><a href="/api_author/status/123"><time>1h</time></a><button data-testid="share">分享</button></article>',
+function setup(saved = true, clipboard = true, share = '<button data-testid="share">分享</button>') {
+  const dom = new JSDOM(`<article data-testid="tweet"><a href="/api_author/status/123"><time>1h</time></a>${share}</article>`,
     { url: 'https://x.com/home', runScripts: 'outside-only', pretendToBeVisual: true });
   const w = dom.window;
   let copied = '';
@@ -24,7 +24,7 @@ function data(w) {
 }
 
 function openMenu(w, html = '<div role="menuitem" data-testid="copyLink"><span>复制链接</span></div>') {
-  w.document.querySelector('[data-testid="share"]').click();
+  w.document.querySelector('[data-testid="share"], [aria-label="分享帖子"]').click();
   const menu = w.document.createElement('div');
   menu.setAttribute('role', 'menu');
   menu.innerHTML = html;
@@ -44,6 +44,15 @@ test('copy Markdown uses intercepted tweet data and injects once into the native
     menu.querySelector('[data-xfc-copy-markdown]').click(); await tick();
     assert.equal(t.copied(), '来自接口的正文\n![](https://pbs.twimg.com/photo.jpg)\n\n— [接口作者 @api_author](https://x.com/api_author/status/123)\n');
     assert.equal(t.w.document.querySelector('[data-xfc-copy-toast]').textContent, '已复制为 Markdown');
+  } finally { t.dom.window.close(); }
+});
+
+test('current X share button without a data-testid still opens a Markdown-capable menu', async () => {
+  const t = setup(true, true, '<button aria-haspopup="menu" aria-label="分享帖子">分享</button>');
+  try {
+    data(t.w);
+    const menu = openMenu(t.w); await tick();
+    assert.ok(menu.querySelector('[data-xfc-copy-markdown]'));
   } finally { t.dom.window.close(); }
 });
 

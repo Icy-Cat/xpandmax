@@ -110,7 +110,8 @@
   }
 
   document.addEventListener('click', event => {
-    const button = event.target instanceof Element && event.target.closest('button[data-testid="share"]');
+    const button = event.target instanceof Element
+      && event.target.closest('button[data-testid="share"], button[aria-haspopup="menu"]');
     const root = button?.closest('article[data-testid="tweet"]');
     if (button) activeId = root ? articleTweetId(root) : undefined;
   }, true);

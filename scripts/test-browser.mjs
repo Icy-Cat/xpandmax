@@ -97,7 +97,7 @@ try {
     assert.equal(await page.locator('[role="link"] [data-xfc-velocity]').getAttribute('data-tier'), 'viral');
     await page.locator('[data-xfc-bookmark-count]').waitFor();
     assert.equal(await page.locator('[data-xfc-bookmark-count]').textContent(), '10');
-    await page.locator('button[data-testid="share"]').click();
+    await page.locator('button[aria-label="分享帖子"]').click();
     await page.locator('[data-xfc-copy-markdown]').click();
     assert.equal(await page.evaluate(() => navigator.clipboard.readText()), '接口返回的原帖正文\n\n— [测试作者 @fixture_author](https://x.com/fixture_author/status/101)\n');
     await page.locator('[data-xfc-inline-profile]').first().waitFor();
@@ -115,7 +115,7 @@ try {
     await page.locator('[data-xfc-bookmark-count]').waitFor();
     await popup.locator('#copy-as-markdown').uncheck();
     await page.waitForFunction(() => !document.querySelector('[data-xfc-copy-markdown]'));
-    await page.locator('button[data-testid="share"]').click();
+    await page.locator('button[aria-label="分享帖子"]').click();
     await page.locator('[role="menu"] [data-testid="copyLink"]').waitFor();
     assert.equal(await page.locator('[data-xfc-copy-markdown]').count(), 0);
     await popup.locator('#copy-as-markdown').check();

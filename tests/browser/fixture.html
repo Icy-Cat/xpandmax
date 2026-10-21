@@ -18,7 +18,7 @@ button { cursor:pointer; }
 <div data-testid="User-Name"><div><a href="/fixture_author"><span>测试作者</span></a></div><div><span>@fixture_author</span><a href="/fixture_author/status/101"><time>1 小时</time></a></div></div>
 <p data-testid="tweetText">这段 DOM 文本不应进入 Markdown。</p>
 <div role="link"><div data-testid="User-Name"><div>引用作者</div><div><span>@fixture_quote</span><div><time id="quote-time">2 小时</time></div></div></div><p>引用卡片不使用原帖的数据。</p></div>
-<div role="group"><button data-testid="reply">回复</button><button data-testid="bookmark"><div>书签</div></button><button data-testid="share">分享</button></div>
+<div role="group"><button data-testid="reply">回复</button><button data-testid="bookmark"><div>书签</div></button><button aria-haspopup="menu" aria-label="分享帖子">分享</button></div>
 </article>
 <article data-testid="tweet"><div data-testid="User-Name"><a href="/fixture_ad">广告样本</a><a href="/fixture_ad/status/103"><time>1 小时</time></a></div><p>广告不显示流速徽章。</p></article>
 <button id="reuse">复用原帖节点</button>
@@ -30,7 +30,7 @@ const times = new URLSearchParams(location.search);
 document.querySelector('#quote-time').dateTime = times.get('quoteTime');
 document.querySelector('#reuse').onclick = () => document.querySelector('a[href*="/status/101"]').href = '/fixture_author/status/999';
 document.querySelector('#restore').onclick = () => document.querySelector('a[href*="/status/999"]').href = '/fixture_author/status/101';
-document.querySelector('[data-testid="share"]').onclick = () => {
+document.querySelector('[aria-label="分享帖子"]').onclick = () => {
   document.querySelector('[role="menu"]')?.remove();
   const menu = document.createElement('div');
   menu.setAttribute('role', 'menu');
